@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Меню кафе</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Навигационная панель -->
+  <nav class="navbar">
+    <div class="navbar-brand">Кафе</div>
+    <button class="navbar-menu-btn" id="openMenuBtn">Меню</button>
+  </nav>
+
+  <!-- Приветствие -->
+  <div class="welcome">
+    Добро пожаловать в наш уютный кафе! Наслаждайтесь свежими блюдами и напитками каждый день.
+  </div>
+
+  <!-- Секция меню (по умолчанию скрыта) -->
+  <section class="menu-section" id="menuSection" style="display:none;">
+    <!-- Поиск -->
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Поиск...">
+    </div>
+
+    <!-- Категории -->
+    <nav class="categories">
+      <button class="active" data-category="All">Все</button>
+      <button data-category="Breakfast">Завтрак</button>
+      <button data-category="Lunch">Обед</button>
+      <button data-category="Treats">Выпечка</button>
+      <button data-category="Dessert">Десерт</button>
+      <button data-category="Drinks">Напитки</button>
+    </nav>
+
+    <!-- Меню -->
+    <section class="menu-grid" id="menuGrid">
+      <div class="card" data-category="Breakfast">
+        <img src="https://source.unsplash.com/300x200/?pancake" alt="Pear & Orange">
+        <h3>Pear & Orange</h3>
+        <div class="info">
+          <span>⏱️ 20 мин</span>
+          <span>⭐ 4.8</span>
+        </div>
+        <p class="price">25.00₽</p>
+      </div>
+      <div class="card" data-category="Lunch">
+        <img src="https://source.unsplash.com/300x200/?mushroom" alt="Meat & Mushrooms">
+        <h3>Meat & Mushrooms</h3>
+        <div class="info">
+          <span>⏱️ 30 мин</span>
+          <span>⭐ 5.0</span>
+        </div>
+        <p class="price">37.00₽</p>
+      </div>
+      <div class="card" data-category="Breakfast">
+        <img src="https://source.unsplash.com/300x200/?toast" alt="Egg & Bread">
+        <h3>Egg & Bread</h3>
+        <div class="info">
+          <span>⏱️ 10 мин</span>
+          <span>⭐ 4.7</span>
+        </div>
+        <p class="price">25.00₽</p>
+      </div>
+      <div class="card" data-category="Dessert">
+        <img src="https://source.unsplash.com/300x200/?dessert" alt="Sweet Pancake">
+        <h3>Sweet Pancake</h3>
+        <div class="info">
+          <span>⏱️ 10 мин</span>
+          <span>⭐ 4.9</span>
+        </div>
+        <p class="price">13.00₽</p>
+      </div>
+      <div class="card" data-category="Drinks">
+        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80" alt="Coffee">
+        <h3>Fresh Coffee</h3>
+        <div class="info">
+          <span>⏱️ 5 мин</span>
+          <span>⭐ 4.9</span>
+        </div>
+        <p class="price">8.00₽</p>
+      </div>
+      <div class="card" data-category="Drinks">
+        <img src="https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80" alt="Juice">
+        <h3>Orange Juice</h3>
+        <div class="info">
+          <span>⏱️ 2 мин</span>
+          <span>⭐ 4.7</span>
+        </div>
+        <p class="price">6.00₽</p>
+      </div>
+    </section>
+  </section>
+
+  <script>
+    // Открытие меню по кнопке
+    document.getElementById('openMenuBtn').onclick = function() {
+      document.getElementById('menuSection').style.display = 'block';
+      document.querySelector('.welcome').style.display = 'none';
+    };
+
+    // Category filter
+    const categoryButtons = document.querySelectorAll('.categories button');
+    const cards = document.querySelectorAll('.card');
+    categoryButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        categoryButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const cat = btn.getAttribute('data-category');
+        cards.forEach(card => {
+          if (cat === 'All' || card.getAttribute('data-category') === cat) {
+            card.style.display = '';
+            setTimeout(() => card.classList.add('show'), 10);
+          } else {
+            card.classList.remove('show');
+            setTimeout(() => card.style.display = 'none', 500);
+          }
+        });
+      });
+    });
+
+    // Search filter
+    document.getElementById('searchInput').addEventListener('input', function() {
+      const val = this.value.toLowerCase();
+      cards.forEach(card => {
+        const name = card.querySelector('h3').textContent.toLowerCase();
+        if (name.includes(val)) {
+          card.style.display = '';
+          setTimeout(() => card.classList.add('show'), 10);
+        } else {
+          card.classList.remove('show');
+          setTimeout(() => card.style.display = 'none', 500);
+        }
+      });
+    });
+
+    // Показать все карточки при загрузке
+    window.addEventListener('DOMContentLoaded', () => {
+      cards.forEach(card => card.classList.add('show'));
+    });
+  </script>
+</body>
+</html>
